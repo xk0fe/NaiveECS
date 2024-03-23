@@ -4,15 +4,19 @@ namespace NaiveECS.Extensions;
 
 public static class EntityExtension
 {
-    public static bool TryGetComponent<T>(this int entity, out T component) where T : struct, IComponent
+    public static ref T GetComponentRef<T>(this int entity) where T : struct, IComponent
     {
-        return World.Default().ComponentCache.TryGetComponent<T>(entity, out component);
+        return ref World.Default().ComponentCache.GetComponentRef<T>(entity);
     }
     
-    [Obsolete("Use SetComponent() instead")]
-    public static void AddComponent(this int entity, ref IComponent component)
+    public static T GetComponent<T>(this int entity) where T : struct, IComponent
     {
-        World.Default().ComponentCache.AddComponent(entity, ref component);
+        return World.Default().ComponentCache.GetComponent<T>(entity);
+    }
+    
+    public static bool TryGetComponent<T>(this int entity, out T component) where T : struct, IComponent
+    {
+        return World.Default().ComponentCache.TryGetComponent(entity, out component);
     }
 
     public static void SetComponent<T>(this int entity, ref T component) where T : struct, IComponent
@@ -20,9 +24,9 @@ public static class EntityExtension
         World.Default().ComponentCache.SetComponent(entity, ref component);
     }
 
-    public static bool RemoveComponent<T>(this int entity, T component) where T : struct, IComponent
+    public static void RemoveComponent<T>(this int entity, T component) where T : struct, IComponent
     {
-        return World.Default().ComponentCache.RemoveComponent(entity, component);
+        World.Default().ComponentCache.RemoveComponent(entity, component);
     }
 
     public static bool Remove(this int entity)

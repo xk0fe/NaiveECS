@@ -1,20 +1,34 @@
-﻿using NaiveECS.Tests;
+﻿using NaiveECS.Example;
 
+var gameExample = new GameExample();
+gameExample.Initialize();
 
-Console.WriteLine("Creating world...");
-var test = new Test();
-Console.WriteLine("Creating entity...");
-test.CreateEntity();
-Console.WriteLine("Getting component of created entity...");
-test.GetComponent(0);
-Console.WriteLine("Changing component of created entity...");
-test.ChangeComponent(0, "Test");
-test.GetComponent(0);
-test.CreateEntity();
-test.RemoveEntity(0);
-test.CreateEntity();
-test.CreateEntity();
-test.RemoveEntity(25);
+var lastFrameTime = DateTime.Now;
+var isRunning = true;
 
+while (isRunning)
+{
+    Console.Clear();
 
-test.GetAllNames();
+    var currentFrameTime = DateTime.Now;
+    var elapsedTime = currentFrameTime - lastFrameTime;
+    var deltaTime = (float)elapsedTime.TotalSeconds;
+    lastFrameTime = currentFrameTime;
+    
+    Console.WriteLine("Update loop running...");
+    gameExample.Run(deltaTime);
+
+    if (Console.KeyAvailable)
+    {
+        ConsoleKeyInfo key = Console.ReadKey(intercept: true);
+        if (key.Key == ConsoleKey.Escape)
+        {
+            isRunning = false;
+        }
+    }
+
+    Thread.Sleep(100);
+}
+
+Console.WriteLine("Update loop stopped. Press any key to exit...");
+Console.ReadKey();

@@ -2,11 +2,11 @@
 
 namespace NaiveECS.Core;
 
-public class Filter : IEnumerable<int>
+public sealed class Filter : IEnumerable<int>
 {
-    private List<int> Entities = new List<int>();
-    private List<Type> WithFilter = new List<Type>();
-    private List<Type> WithoutFilter = new List<Type>();
+    private List<int> Entities = new();
+    private HashSet<Type> WithFilter = new();
+    private HashSet<Type> WithoutFilter = new();
     private ComponentCache _componentCache;
 
     public Filter(World world)
@@ -76,18 +76,16 @@ public class Filter : IEnumerable<int>
         foreach (var (entity, components) in _componentCache.Components)
         {
             var filterPassed = true;
-            for (var i = 0; i < WithFilter.Count; i++)
+            foreach (var with in WithFilter)
             {
-                var type = WithFilter[i];
-                if (components.ContainsKey(type)) continue;
+                if (components.ContainsKey(with)) continue;
                 filterPassed = false;
                 break;
             }
 
-            for (var i = 0; i < WithoutFilter.Count; i++)
+            foreach (var without in WithoutFilter)
             {
-                var type = WithoutFilter[i];
-                if (!components.ContainsKey(type)) continue;
+                if (!components.ContainsKey(without)) continue;
                 filterPassed = false;
                 break;
             }

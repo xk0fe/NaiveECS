@@ -27,4 +27,9 @@ public class World
         ComponentCache.Components.Remove(entity);
         return true;
     }
+    
+    public void Commit()
+    {
+        ComponentCache.Commit();
+    }
 }

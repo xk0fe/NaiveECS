@@ -1,5 +1,5 @@
 ﻿# Overview
-A naive implementation of ECS in C# with API heavily inspired by Morpeh ECS made for learning purposes.
+A naive implementation of ECS in C# with API heavily inspired by [Morpeh ECS](https://github.com/scellecs/morpeh) made for learning purposes.
 In this implementation each entity is an integer, each component is a struct. The core gives you the ability to create entities, manage them and their components. The core does not handle systems, this is up to the user. However, the extension folder contains some syntax sugar to make system creation easier.
 
 ## Structure
@@ -14,7 +14,7 @@ Code examples
 Syntax sugar and QOL improvements such as system interface ISystem and entity extension methods for managing components
 
 ### Tests
-Unit tests
+Unit tests that I really have no idea about, but seems like they do work just fine.
 
 # Code examples
 
@@ -67,3 +67,5 @@ API - https://github.com/scellecs/morpeh
 NUnit - https://nunit.org/
 
 Avoiding struct boxing - https://giannisakritidis.com/blog/Avoid-Struct-Boxing/
+
+ - https://www.sebaslab.com/casting-a-struct-into-an-interface-inside-a-generic-method-without-boxing/
