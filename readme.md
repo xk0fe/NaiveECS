@@ -55,7 +55,7 @@ Getting a component from an entity and modifying it. By using the *ref* keyword 
 var filter = new Filter().With<Position>();
 
 foreach (var entity in filter) {
-    ref var position = ref world.GetComponent<Position>(entity);
+    var position = world.GetComponent<Position>(entity);
     position.X += 1;
     entity.SetComponent(ref position);
     Console.WriteLine($"Entity {entity} has position {position.X}, {position.Y}");
