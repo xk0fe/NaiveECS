@@ -12,7 +12,7 @@ public class InitializeHealthSystem : ISystem
     
     public void Awake()
     {
-        _filter = new Filter().With<PositionComponent>().Without<HealthComponent>();
+        _filter = new Filter().With<CharacterComponent>().Without<HealthComponent>();
     }
 
     public void Update(float deltaTime)
@@ -24,7 +24,6 @@ public class InitializeHealthSystem : ISystem
                 Value = DEFAULT_HEALTH
             };
             entity.SetComponent(ref health);
-            Console.WriteLine("HEALTH SET!");
         }
     }
 

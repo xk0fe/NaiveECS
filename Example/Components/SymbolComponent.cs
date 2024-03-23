@@ -2,7 +2,7 @@
 
 namespace NaiveECS.Example.Components;
 
-public struct AgeComponent : IComponent
+public struct SymbolComponent : IComponent
 {
-    public int Value;
+    public char Value;
 }

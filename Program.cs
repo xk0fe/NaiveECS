@@ -5,6 +5,7 @@ gameExample.Initialize();
 
 var lastFrameTime = DateTime.Now;
 var isRunning = true;
+Console.CursorVisible = false;
 
 while (isRunning)
 {
@@ -15,7 +16,6 @@ while (isRunning)
     var deltaTime = (float)elapsedTime.TotalSeconds;
     lastFrameTime = currentFrameTime;
     
-    Console.WriteLine("Update loop running...");
     gameExample.Run(deltaTime);
 
     if (Console.KeyAvailable)
@@ -27,7 +27,7 @@ while (isRunning)
         }
     }
 
-    Thread.Sleep(100);
+    Thread.Sleep(500);
 }
 
 Console.WriteLine("Update loop stopped. Press any key to exit...");

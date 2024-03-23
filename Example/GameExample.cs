@@ -1,4 +1,6 @@
 ﻿using NaiveECS.Core;
+using NaiveECS.Example.Common;
+using NaiveECS.Example.Constants;
 using NaiveECS.Example.Systems;
 using NaiveECS.Extensions;
 
@@ -10,8 +12,24 @@ public class GameExample
     
     public void Initialize()
     {
-        AddSystem(new InitializeWarriorsSystem());
+        Console.Title = "NaiveECS Example - Game";
+
+        var characterFactory = new CharacterFactory();
+        characterFactory.CreatePlayer();
+        var random = new Random();
+        for (var i = 0; i < random.Next(GameSettings.MIN_NPC_COUNT, GameSettings.MAX_NPC_COUNT); i++)
+        {
+            characterFactory.CreateNPC(random);
+        }
+        
+        AddSystem(new NPCMovementSystem());
         AddSystem(new InitializeHealthSystem());
+        
+        AddSystem(new PlayerMovementSystem());
+        
+        AddSystem(new GridSystem());
+        AddSystem(new RenderSystem());
+        AddSystem(new GameLogSystem());
         // AddSystem(new MovementSystem());
         // AddSystem(new RenderSystem());
     }

@@ -71,7 +71,7 @@ public class Test
     
     public void GetAllNames()
     {
-        var filter = new Filter().With<NameComponent>().Without<AgeComponent>();
+        var filter = new Filter().With<NameComponent>().Without<CharacterComponent>();
 
         foreach (var entity in filter)
         {
