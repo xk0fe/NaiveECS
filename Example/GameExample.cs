@@ -11,6 +11,7 @@ public class GameExample
     public void Initialize()
     {
         AddSystem(new InitializeWarriorsSystem());
+        AddSystem(new InitializeHealthSystem());
         // AddSystem(new MovementSystem());
         // AddSystem(new RenderSystem());
     }

@@ -8,7 +8,7 @@ public class InitializeWarriorsSystem : ISystem
 {
     private Filter _filter;
 
-    private const int WARRIOR_COUNT = 1;
+    private const int WARRIOR_COUNT = 3;
 
     public void Awake()
     {
