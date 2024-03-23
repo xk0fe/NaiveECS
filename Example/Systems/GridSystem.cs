@@ -45,8 +45,4 @@ public class GridSystem : ISystem
             grid.Value.DisplayGrid();
         }
     }
-
-    public void Dispose()
-    {
-    }
 }

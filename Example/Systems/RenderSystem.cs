@@ -19,13 +19,9 @@ public class RenderSystem : ISystem
         {
             entity.TryGetComponent(out PositionComponent position);
             entity.TryGetComponent(out SymbolComponent symbol);
-            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.ForegroundColor = symbol.Color;
             Console.SetCursorPosition(position.X, position.Y);
             Console.Write(symbol.Value);
         }
-    }
-
-    public void Dispose()
-    {
     }
 }

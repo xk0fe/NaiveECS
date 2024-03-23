@@ -19,11 +19,15 @@ public class CharacterFactory
         var symbol = new SymbolComponent
         {
             Value = GameSettings.PLAYER_SYMBOL,
+            Color = ConsoleColor.Yellow,
         };
         entity.SetComponent(ref symbol);
         var characterComponent = new CharacterComponent();
         entity.SetComponent(ref characterComponent);
-        var playerComponent = new PlayerComponent();
+        var playerComponent = new PlayerComponent
+        {
+            Level = 1,
+        };
         entity.SetComponent(ref playerComponent);
         return entity;
     }
@@ -41,10 +45,18 @@ public class CharacterFactory
         var symbol = new SymbolComponent
         {
             Value = GameSettings.NPC_SYMBOL,
+            Color = ConsoleColor.Blue,
         };
         entity.SetComponent(ref symbol);
         var characterComponent = new CharacterComponent();
         entity.SetComponent(ref characterComponent);
+
+        var decisionDelay = new DecisionDelayComponent
+        {
+            Delay = GameSettings.NPC_DECISION_DELAY,
+            CurrentDelay = 0,
+        };
+        entity.SetComponent(ref decisionDelay);
         return entity;
     }
 }

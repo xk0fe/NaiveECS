@@ -9,7 +9,7 @@ Console.CursorVisible = false;
 
 while (isRunning)
 {
-    Console.Clear();
+    Console.SetCursorPosition(0, 0);
 
     var currentFrameTime = DateTime.Now;
     var elapsedTime = currentFrameTime - lastFrameTime;

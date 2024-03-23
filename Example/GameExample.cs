@@ -13,7 +13,13 @@ public class GameExample
     public void Initialize()
     {
         Console.Title = "NaiveECS Example - Game";
+        
+        CreateCharacters();
+        InitializeSystems();
+    }
 
+    private void CreateCharacters()
+    {
         var characterFactory = new CharacterFactory();
         characterFactory.CreatePlayer();
         var random = new Random();
@@ -21,29 +27,26 @@ public class GameExample
         {
             characterFactory.CreateNPC(random);
         }
-        
+    }
+
+    private void InitializeSystems()
+    {
         AddSystem(new NPCMovementSystem());
         AddSystem(new InitializeHealthSystem());
         
         AddSystem(new PlayerMovementSystem());
+        AddSystem(new DamageSystem());
+        AddSystem(new KillSystem());
         
         AddSystem(new GridSystem());
         AddSystem(new RenderSystem());
         AddSystem(new GameLogSystem());
-        // AddSystem(new MovementSystem());
-        // AddSystem(new RenderSystem());
     }
 
     private void AddSystem(ISystem system)
     {
         system.Awake();
         _systems.Add(system);
-    }
-
-    private void RemoveSystem(ISystem system)
-    {
-        system.Dispose();
-        _systems.Remove(system);
     }
     
     public void Run(float deltaTime)

@@ -8,7 +8,9 @@ The core of the ECS, contains the entity cache, component cache and filter. The 
 World is the main class of the core, it contains the entity cache and component cache. It is responsible for creating entities, adding/removing components to/from entities.
 
 ### Example
-Code examples
+A code example of a basic console roguelike game. Walk around map and kill goblins
+
+![game screenshot](Example/example.png)
 
 ### Extensions
 Syntax sugar and QOL improvements such as system interface ISystem and entity extension methods for managing components

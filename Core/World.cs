@@ -17,6 +17,7 @@ public class World
         return EntityCache.CreateEntity();
     }
     
+    // queue for removal on Commit
     public bool RemoveEntity(int entity)
     {
         if (!EntityCache.RemoveEntity(entity))

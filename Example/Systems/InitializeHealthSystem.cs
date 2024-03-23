@@ -26,8 +26,4 @@ public class InitializeHealthSystem : ISystem
             entity.SetComponent(ref health);
         }
     }
-
-    public void Dispose()
-    {
-    }
 }

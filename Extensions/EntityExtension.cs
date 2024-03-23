@@ -24,9 +24,9 @@ public static class EntityExtension
         World.Default().ComponentCache.SetComponent(entity, ref component);
     }
 
-    public static void RemoveComponent<T>(this int entity, T component) where T : struct, IComponent
+    public static void RemoveComponent<T>(this int entity) where T : struct, IComponent
     {
-        World.Default().ComponentCache.RemoveComponent(entity, component);
+        World.Default().ComponentCache.RemoveComponent<T>(entity);
     }
 
     public static bool Remove(this int entity)

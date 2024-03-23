@@ -4,40 +4,69 @@ namespace NaiveECS.Example.Common;
 
 public class Grid
 {
-    private bool[,] _grid;
+    private bool[,] _cells;
+    private bool[,] _characterCells;
     private int _width;
     private int _height;
 
     public Grid(int width, int height)
     {
-        this._width = width;
-        this._height = height;
-        _grid = new bool[width, height];
-        InitializeGrid();
+        _width = width;
+        _height = height;
+        InitializeGrid(ref _cells);
+        InitializeGrid(ref _characterCells);
     }
 
-    private void InitializeGrid()
+    private void InitializeGrid(ref bool[,] grid)
     {
-        for (int y = 0; y < _height; y++)
+        grid = new bool[_width, _height];
+        for (var y = 0; y < _height; y++)
         {
-            for (int x = 0; x < _width; x++)
+            for (var x = 0; x < _width; x++)
             {
-                _grid[x, y] = true;
+                grid[x, y] = true;
             }
         }
     }
 
+    public void SetOccupied(int x, int y, bool isOccupied)
+    {
+        if (IsValidPosition(x, y))
+        {
+            _characterCells[x, y] = !isOccupied;
+        }
+    }
+    
     public void SetObstacle(int x, int y)
     {
         if (IsValidPosition(x, y))
         {
-            _grid[x, y] = false;
+            _cells[x, y] = false;
         }
     }
 
-    public bool CanMoveTo(int x, int y)
+    public bool CanMoveTo(int x, int y, out CellBlockedReason blockedReason)
     {
-        return IsValidPosition(x, y) && _grid[x, y];
+        blockedReason = CellBlockedReason.None;
+        if (!IsValidPosition(x, y))
+        {
+            blockedReason = CellBlockedReason.OutOfBounds;
+            return false;
+        }
+
+        if (!_cells[x, y])
+        {
+            blockedReason = CellBlockedReason.Blocked;
+            return false;
+        }
+        
+        if (!_characterCells[x, y])
+        {
+            blockedReason = CellBlockedReason.Occupied;
+            return false;
+        }
+
+        return true;
     }
 
     private bool IsValidPosition(int x, int y)
@@ -51,7 +80,7 @@ public class Grid
         {
             for (var x = 0; x < _width; x++)
             {
-                var isObstacle = !_grid[x, y];
+                var isObstacle = !_cells[x, y];
                 Console.ForegroundColor = isObstacle ? ConsoleColor.Red : ConsoleColor.White;
                 Console.Write(isObstacle ? GameSettings.WALL_SYMBOL : GameSettings.FLOOR_SYMBOL);
             }

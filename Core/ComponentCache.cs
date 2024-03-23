@@ -25,15 +25,15 @@ public sealed class ComponentCache
         }
     }
 
-    public void RemoveComponent<T>(int entity, T component) where T : struct, IComponent
+    public void RemoveComponent<T>(int entity) where T : struct, IComponent
     {
         if (_removeQueue.TryGetValue(entity, out var components))
         {
-            components.Add(component.GetType());
+            components.Add(typeof(T));
         }
         else
         {
-            _removeQueue[entity] = [component.GetType()];
+            _removeQueue[entity] = [typeof(T)];
         }
     }
 
