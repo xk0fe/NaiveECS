@@ -31,6 +31,6 @@ public class World
     public void Commit()
     {
         ComponentCache.Commit();
-        ComponentCache.RemoveAllEntityComponentsSlow();
+        ComponentCache.RemoveDisposedEntities();
     }
 }

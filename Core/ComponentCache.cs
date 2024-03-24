@@ -5,8 +5,12 @@ namespace NaiveECS.Core;
 
 public sealed class ComponentCache
 {
+    // Store components by type and entity ID with a reference to component
     public Dictionary<Type, Dictionary<int, IComponent>> Components = new();
+    // Store entity with a set of component types
+    public Dictionary<int, HashSet<Type>> _entities = new();
     
+    // Queues for adding and removing components and entities
     public Dictionary<Type, Dictionary<int, IComponent>> _addQueue = new();
     public Dictionary<int, HashSet<Type>> _removeQueue = new();
     public HashSet<int> _removeEntitiesQueue = new();
@@ -90,6 +94,11 @@ public sealed class ComponentCache
                 {
                     continue;
                 }
+                
+                if (_entities.TryGetValue(entity, out var entityComponents))
+                {
+                    entityComponents.Remove(type);
+                }
                 entities.Remove(entity);
             }
         }
@@ -107,6 +116,18 @@ public sealed class ComponentCache
             {
                 Components[type] = queuedEntities;
             }
+
+            foreach (var (entity, component) in queuedEntities)
+            {
+                if (_entities.TryGetValue(entity, out var components))
+                {
+                    components.Add(type);
+                }
+                else
+                {
+                    _entities[entity] = [type];
+                }
+            }
         }
         _addQueue.Clear();
     }
@@ -116,13 +137,20 @@ public sealed class ComponentCache
         _removeEntitiesQueue.Add(entity);
     }
     
-    public void RemoveAllEntityComponentsSlow()
+    public void RemoveDisposedEntities()
     {
         foreach (var entity in _removeEntitiesQueue)
         {
-            foreach (var (type, entities) in Components)
+            if (!_entities.TryGetValue(entity, out var components))
             {
-                entities.Remove(entity);
+                continue;
+            }
+            foreach (var component in components)
+            {
+                if (Components.TryGetValue(component, out var entities))
+                {
+                    entities.Remove(entity);
+                }
             }
         }
     }
