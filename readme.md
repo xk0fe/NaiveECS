@@ -83,4 +83,4 @@ NUnit - https://nunit.org/
 
 Avoiding struct boxing - https://giannisakritidis.com/blog/Avoid-Struct-Boxing/
 
- - https://www.sebaslab.com/casting-a-struct-into-an-interface-inside-a-generic-method-without-boxing/
+Further reading - https://www.sebaslab.com/casting-a-struct-into-an-interface-inside-a-generic-method-without-boxing/

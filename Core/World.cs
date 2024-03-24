@@ -17,7 +17,6 @@ public class World
         return EntityCache.CreateEntity();
     }
     
-    // todo queue for removal on Commit
     public bool RemoveEntity(int entity)
     {
         if (!EntityCache.RemoveEntity(entity))
@@ -25,12 +24,13 @@ public class World
             return false;
         }
         
-        ComponentCache.RemoveAllEntityComponentsSlow(entity);
+        ComponentCache.MarkEntityForRemoval(entity);
         return true;
     }
     
     public void Commit()
     {
         ComponentCache.Commit();
+        ComponentCache.RemoveAllEntityComponentsSlow();
     }
 }

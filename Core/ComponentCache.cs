@@ -9,6 +9,7 @@ public sealed class ComponentCache
     
     public Dictionary<Type, Dictionary<int, IComponent>> _addQueue = new();
     public Dictionary<int, HashSet<Type>> _removeQueue = new();
+    public HashSet<int> _removeEntitiesQueue = new();
 
     public void SetComponent<T>(int entity, ref T component) where T : struct, IComponent
     {
@@ -109,12 +110,20 @@ public sealed class ComponentCache
         }
         _addQueue.Clear();
     }
-    
-    public void RemoveAllEntityComponentsSlow(int entity)
+
+    public void MarkEntityForRemoval(int entity)
     {
-        foreach (var (type, entities) in Components)
+        _removeEntitiesQueue.Add(entity);
+    }
+    
+    public void RemoveAllEntityComponentsSlow()
+    {
+        foreach (var entity in _removeEntitiesQueue)
         {
-            entities.Remove(entity);
+            foreach (var (type, entities) in Components)
+            {
+                entities.Remove(entity);
+            }
         }
     }
 }
