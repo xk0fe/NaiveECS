@@ -33,10 +33,13 @@ public class FilterTests
         };
         testEntity.SetComponent(ref name);
         
+        _world.Commit();
+        
         var filter = new Filter(_world);
         filter.With<NameComponent>();
+        
         Assert.That(filter != null, "With filter creation failed!");
-
+        Assert.That(filter.Count() > 0, "Filter is empty!");
         foreach (var entity in filter)
         {
             if (entity.TryGetComponent(out NameComponent component))
@@ -58,8 +61,11 @@ public class FilterTests
         
         var filter = new Filter(_world);
         filter.With<NameComponent>();
+        
+        _world.Commit();
+        
         Assert.That(filter != null, "With filter creation failed!");
-
+        Assert.That(filter.Count() > 0, "Filter is empty!");
         foreach (var entity in filter)
         {
             var component = entity.GetComponent<NameComponent>();
@@ -76,6 +82,7 @@ public class FilterTests
         }
     }
     
+    // todo
     [Test]
     public void FilterGetComponentRef()
     {
@@ -88,7 +95,11 @@ public class FilterTests
         
         var filter = new Filter(_world);
         filter.With<NameComponent>();
+        
+        _world.Commit();
+
         Assert.That(filter != null, "With filter creation failed!");
+        Assert.That(filter.Count() > 0, "Filter is empty!");
 
         // todo
         // System.ExecutionEngineException: Exception of type 'System.ExecutionEngineException' was thrown.

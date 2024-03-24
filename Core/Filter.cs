@@ -4,7 +4,7 @@ namespace NaiveECS.Core;
 
 public sealed class Filter : IEnumerable<int>
 {
-    private List<int> Entities = new();
+    private HashSet<int> Entities = new();
     private HashSet<Type> WithFilter = new();
     private HashSet<Type> WithoutFilter = new();
     private ComponentCache _componentCache;
@@ -73,29 +73,39 @@ public sealed class Filter : IEnumerable<int>
     public IEnumerator<int> GetEnumerator()
     {
         Entities.Clear();
-        foreach (var (entity, components) in _componentCache.Components)
+
+        var components = _componentCache.Components;
+        
+        foreach (var with in WithFilter)
         {
-            var filterPassed = true;
-            foreach (var with in WithFilter)
+            if (components.TryGetValue(with, out var entities))
             {
-                if (components.ContainsKey(with)) continue;
-                filterPassed = false;
-                break;
+                if (Entities.Count == 0)
+                {
+                    Entities.UnionWith(entities.Keys);
+                }
+                else
+                {
+                    Entities.IntersectWith(entities.Keys);
+                }
             }
-
-            foreach (var without in WithoutFilter)
+            else
             {
-                if (!components.ContainsKey(without)) continue;
-                filterPassed = false;
+                Entities.Clear();
                 break;
-            }
-
-            if (filterPassed)
-            {
-                Entities.Add(entity);
             }
         }
 
+        foreach (var type in WithoutFilter)
+        {
+            if (!components.TryGetValue(type, out var entities))
+            {
+                continue;
+            }
+
+            Entities.ExceptWith(entities.Keys);
+        }
+        
         return Entities.GetEnumerator();
     }
 

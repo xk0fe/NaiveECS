@@ -26,6 +26,9 @@ public class ComponentTests
             Value = value,
         };
         entity.SetComponent(ref name);
+        
+        _world.Commit();
+
         if (entity.TryGetComponent<NameComponent>(out var component))
         {
             Assert.Pass($"Entity {entity} has {nameof(NameComponent)} component with value {component.Value}!");

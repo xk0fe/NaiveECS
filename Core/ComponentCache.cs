@@ -5,22 +5,22 @@ namespace NaiveECS.Core;
 
 public sealed class ComponentCache
 {
-    public Dictionary<int, Dictionary<Type, IComponent>> Components = new();
+    public Dictionary<Type, Dictionary<int, IComponent>> Components = new();
     
-    public Dictionary<int, Dictionary<Type, IComponent>> _addQueue = new();
+    public Dictionary<Type, Dictionary<int, IComponent>> _addQueue = new();
     public Dictionary<int, HashSet<Type>> _removeQueue = new();
 
     public void SetComponent<T>(int entity, ref T component) where T : struct, IComponent
     {
-        if (_addQueue.TryGetValue(entity, out var components))
+        if (_addQueue.TryGetValue(component.GetType(), out var entities))
         {
-            components[component.GetType()] = component;
+            entities[entity] = component;
         }
         else
         {
-            _addQueue[entity] = new Dictionary<Type, IComponent>()
+            _addQueue[component.GetType()] = new Dictionary<int, IComponent>()
             {
-                { component.GetType(), component }
+                { entity, component }
             };
         }
     }
@@ -41,9 +41,9 @@ public sealed class ComponentCache
     {
         component = default;
 
-        if (!Components.TryGetValue(entity, out var components)) return false;
+        if (!Components.TryGetValue(typeof(T), out var entities)) return false;
         
-        if (components.TryGetValue(typeof(T), out var objComponent) && objComponent is T)
+        if (entities.TryGetValue(entity, out var objComponent) && objComponent is T)
         {
             component = (T)objComponent;
             return true;
@@ -54,9 +54,9 @@ public sealed class ComponentCache
     
     public ref T GetComponentRef<T>(int entity) where T : struct, IComponent
     {
-        if (!Components.TryGetValue(entity, out var components)) throw new InvalidOperationException("Entity does not exist in the component dictionary.");
+        if (!Components.TryGetValue(typeof(T), out var components)) throw new InvalidOperationException("Entity does not exist in the component dictionary.");
     
-        ref var value = ref CollectionsMarshal.GetValueRefOrNullRef(components, typeof(T));
+        ref var value = ref CollectionsMarshal.GetValueRefOrNullRef(components, entity);
         if (value is T)
         {
             return ref Unsafe.As<IComponent, T>(ref value);
@@ -66,12 +66,12 @@ public sealed class ComponentCache
     
     public T GetComponent<T>(int entity) where T : struct, IComponent
     {
-        if (!Components.TryGetValue(entity, out var components))
+        if (!Components.TryGetValue(typeof(T), out var entities))
         {
             throw new InvalidOperationException("Entity does not exist in the component dictionary.");
         }
 
-        if (components.TryGetValue(typeof(T), out var value) && value is T)
+        if (entities.TryGetValue(entity, out var value) && value is T)
         {
             return (T)value;
         }
@@ -83,31 +83,38 @@ public sealed class ComponentCache
     {
         foreach (var (entity, removeType) in _removeQueue)
         {
-            if (!Components.TryGetValue(entity, out var components))
-            {
-                continue;
-            }
-            
             foreach (var type in removeType)
             {
-                components.Remove(type);
+                if (!Components.TryGetValue(type, out var entities))
+                {
+                    continue;
+                }
+                entities.Remove(entity);
             }
         }
         
-        foreach (var (entity, queuedComponents) in _addQueue)
+        foreach (var (type, queuedEntities) in _addQueue)
         {
-            if (Components.TryGetValue(entity, out var components))
+            if (Components.TryGetValue(type, out var entities))
             {
-                foreach (var (queuedType, queuedComponent) in queuedComponents)
+                foreach (var (queuedEntity, queuedComponent) in queuedEntities)
                 {
-                    components[queuedType] = queuedComponent;
+                    entities[queuedEntity] = queuedComponent;
                 }
             }
             else
             {
-                Components[entity] = queuedComponents;
+                Components[type] = queuedEntities;
             }
         }
         _addQueue.Clear();
+    }
+    
+    public void RemoveAllEntityComponentsSlow(int entity)
+    {
+        foreach (var (type, entities) in Components)
+        {
+            entities.Remove(entity);
+        }
     }
 }
