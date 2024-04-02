@@ -30,7 +30,6 @@ public class MemoryBenchmarkerDemo
             var component = new BenchmarkContext.Component1();
             entity.SetComponent(component);
         }
-        World.Default().Commit();
     }
     
     [Benchmark]
@@ -45,7 +44,6 @@ public class MemoryBenchmarkerDemo
             entity.SetComponent(component);
             entity.SetComponent(component2);
         }
-        World.Default().Commit();
     }
     
     [Benchmark]
@@ -62,7 +60,6 @@ public class MemoryBenchmarkerDemo
             entity.SetComponent(component2);
             entity.SetComponent(component3);
         }
-        World.Default().Commit();
     }
     
     [Benchmark]
