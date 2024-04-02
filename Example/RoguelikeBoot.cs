@@ -1,16 +1,17 @@
 ﻿using NaiveECS.Core;
 using NaiveECS.Example.Common;
 using NaiveECS.Example.Constants;
+using NaiveECS.Example.Interfaces;
 using NaiveECS.Example.Systems;
 using NaiveECS.Extensions;
 
 namespace NaiveECS.Example;
 
-public class GameExample
+public class RoguelikeBoot : IBootable
 {
     private List<ISystem> _systems = new();
     
-    public void Initialize()
+    public void Boot()
     {
         Console.Title = "NaiveECS Example - Game";
         
