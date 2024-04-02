@@ -6,26 +6,27 @@ namespace NaiveECS.Core;
 public sealed class ComponentCache
 {
     // Store components by type and entity ID with a reference to component
-    public Dictionary<Type, Dictionary<int, IComponent>> Components = new();
+    public Dictionary<Type, Dictionary<int, IComponent>> Components = new(1024);
     // Store entity with a set of component types
-    public Dictionary<int, HashSet<Type>> _entities = new();
+    public Dictionary<int, HashSet<Type>> _entities = new(1024);
     
     // Queues for adding and removing components and entities
-    public Dictionary<Type, Dictionary<int, IComponent>> _addQueue = new();
-    public Dictionary<int, HashSet<Type>> _removeQueue = new();
-    public HashSet<int> _removeEntitiesQueue = new();
+    public Dictionary<Type, Dictionary<int, IComponent>> _addQueue = new(512);
+    public Dictionary<int, HashSet<Type>> _removeQueue = new(512);
+    public HashSet<int> _removeEntitiesQueue = new(512);
 
     public void SetComponent<T>(int entity, T component) where T : struct, IComponent
     {
-        if (_addQueue.TryGetValue(component.GetType(), out var entities))
+        var type = typeof(T);
+        if (_addQueue.TryGetValue(type, out var entities))
         {
             entities[entity] = component;
         }
         else
         {
-            _addQueue[component.GetType()] = new Dictionary<int, IComponent>()
+            _addQueue[type] = new Dictionary<int, IComponent>()
             {
-                { entity, component }
+                [entity] = component
             };
         }
     }
@@ -47,14 +48,11 @@ public sealed class ComponentCache
         component = default;
 
         if (!Components.TryGetValue(typeof(T), out var entities)) return false;
-        
-        if (entities.TryGetValue(entity, out var objComponent) && objComponent is T)
-        {
-            component = (T)objComponent;
-            return true;
-        }
 
-        return false;
+        if (!entities.TryGetValue(entity, out var value)) return false;
+        if (value is not T typedValue) return false;
+        component = typedValue;
+        return true;
     }
     
     public ref T GetComponentRef<T>(int entity) where T : struct, IComponent
@@ -76,9 +74,12 @@ public sealed class ComponentCache
             throw new InvalidOperationException("Entity does not exist in the component dictionary.");
         }
 
-        if (entities.TryGetValue(entity, out var value) && value is T)
+        if (entities.TryGetValue(entity, out var value))
         {
-            return (T)value;
+            if (value is T typedValue)
+            {
+                return typedValue;
+            }
         }
 
         throw new InvalidOperationException($"Component of type {typeof(T)} does not exist for entity {entity}.");

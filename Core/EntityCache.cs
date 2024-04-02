@@ -3,8 +3,8 @@
 public sealed class EntityCache
 {
     public HashSet<int> Entities => _entities;
-    private HashSet<int> _entities = new();
-    private Queue<int> _freedIds = new();
+    private HashSet<int> _entities = new(1024);
+    private Queue<int> _freedIds = new(1024);
     private int _nextId = int.MinValue;
     public int CreateEntity()
     {

@@ -4,9 +4,9 @@ namespace NaiveECS.Core;
 
 public sealed class Filter : IEnumerable<int>
 {
-    private HashSet<int> Entities = new();
-    private HashSet<Type> WithFilter = new();
-    private HashSet<Type> WithoutFilter = new();
+    private HashSet<int> _entities = new(256);
+    private HashSet<Type> _withFilter = new(8);
+    private HashSet<Type> _withoutFilter = new(8);
     private ComponentCache _componentCache;
 
     public Filter(World world)
@@ -39,7 +39,7 @@ public sealed class Filter : IEnumerable<int>
     {
         for (var i = 0; i < type.Length; i++)
         {
-            WithFilter.Add(type[i]);
+            _withFilter.Add(type[i]);
         }
 
         return this;
@@ -64,7 +64,7 @@ public sealed class Filter : IEnumerable<int>
     {
         for (var i = 0; i < type.Length; i++)
         {
-            WithoutFilter.Add(type[i]);
+            _withoutFilter.Add(type[i]);
         }
 
         return this;
@@ -72,41 +72,41 @@ public sealed class Filter : IEnumerable<int>
 
     public IEnumerator<int> GetEnumerator()
     {
-        Entities.Clear();
+        _entities.Clear();
 
         var components = _componentCache.Components;
         
-        foreach (var with in WithFilter)
+        foreach (var with in _withFilter)
         {
             if (components.TryGetValue(with, out var entities))
             {
-                if (Entities.Count == 0)
+                if (_entities.Count == 0)
                 {
-                    Entities.UnionWith(entities.Keys);
+                    _entities.UnionWith(entities.Keys);
                 }
                 else
                 {
-                    Entities.IntersectWith(entities.Keys);
+                    _entities.IntersectWith(entities.Keys);
                 }
             }
             else
             {
-                Entities.Clear();
+                _entities.Clear();
                 break;
             }
         }
 
-        foreach (var type in WithoutFilter)
+        foreach (var type in _withoutFilter)
         {
             if (!components.TryGetValue(type, out var entities))
             {
                 continue;
             }
 
-            Entities.ExceptWith(entities.Keys);
+            _entities.ExceptWith(entities.Keys);
         }
         
-        return Entities.GetEnumerator();
+        return _entities.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
