@@ -1,4 +1,4 @@
-﻿namespace NaiveECS.Example.Constants;
+﻿namespace NaiveECS.Example.Roguelike.Constants;
 
 public static class GameSettings
 {

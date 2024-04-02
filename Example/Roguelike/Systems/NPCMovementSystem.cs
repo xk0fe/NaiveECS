@@ -1,8 +1,8 @@
 ﻿using NaiveECS.Core;
-using NaiveECS.Example.Components;
+using NaiveECS.Example.Roguelike.Components;
 using NaiveECS.Extensions;
 
-namespace NaiveECS.Example.Systems;
+namespace NaiveECS.Example.Roguelike.Systems;
 
 public class NPCMovementSystem : ISystem
 {

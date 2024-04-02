@@ -1,10 +1,10 @@
 ﻿using NaiveECS.Core;
-using NaiveECS.Example.Common;
-using NaiveECS.Example.Components;
-using NaiveECS.Example.Constants;
+using NaiveECS.Example.Roguelike.Common;
+using NaiveECS.Example.Roguelike.Components;
+using NaiveECS.Example.Roguelike.Constants;
 using NaiveECS.Extensions;
 
-namespace NaiveECS.Example.Systems;
+namespace NaiveECS.Example.Roguelike.Systems;
 
 public class PlayerMovementSystem : ISystem
 {

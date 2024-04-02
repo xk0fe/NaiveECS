@@ -1,6 +1,6 @@
-﻿using NaiveECS.Example.Constants;
+﻿using NaiveECS.Example.Roguelike.Constants;
 
-namespace NaiveECS.Example.Common;
+namespace NaiveECS.Example.Roguelike.Common;
 
 public class Grid
 {

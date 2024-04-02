@@ -1,4 +1,4 @@
-﻿namespace NaiveECS.Example.Common;
+﻿namespace NaiveECS.Example.Roguelike.Common;
 
 public enum CellBlockedReason
 {

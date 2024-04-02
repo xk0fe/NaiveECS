@@ -1,11 +1,11 @@
 ﻿using NaiveECS.Core;
-using NaiveECS.Example.Common;
-using NaiveECS.Example.Constants;
 using NaiveECS.Example.Interfaces;
-using NaiveECS.Example.Systems;
+using NaiveECS.Example.Roguelike.Common;
+using NaiveECS.Example.Roguelike.Constants;
+using NaiveECS.Example.Roguelike.Systems;
 using NaiveECS.Extensions;
 
-namespace NaiveECS.Example;
+namespace NaiveECS.Example.Roguelike;
 
 public class RoguelikeBoot : IBootable
 {

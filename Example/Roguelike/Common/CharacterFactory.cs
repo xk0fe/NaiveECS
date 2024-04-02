@@ -1,9 +1,9 @@
 ﻿using NaiveECS.Core;
-using NaiveECS.Example.Components;
-using NaiveECS.Example.Constants;
+using NaiveECS.Example.Roguelike.Components;
+using NaiveECS.Example.Roguelike.Constants;
 using NaiveECS.Extensions;
 
-namespace NaiveECS.Example.Common;
+namespace NaiveECS.Example.Roguelike.Common;
 
 public class CharacterFactory
 {

@@ -1,5 +1,5 @@
 ﻿using NaiveECS.Core;
-using NaiveECS.Example.Components;
+using NaiveECS.Example.Roguelike.Components;
 using NaiveECS.Extensions;
 using NUnit.Framework;
 

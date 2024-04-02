@@ -1,5 +1,5 @@
-﻿using NaiveECS.Example.Constants;
-using NaiveECS.Example.Interfaces;
+﻿using NaiveECS.Example.Interfaces;
+using NaiveECS.Example.Roguelike.Constants;
 
 namespace NaiveECS.Example;
 
