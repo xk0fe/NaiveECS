@@ -20,21 +20,23 @@ Unit tests that I really have no idea about, but seems like they do work just fi
 
 # Code examples
 
-Creating a world. The default world is a singleton, but you can create multiple worlds if you want.
+## Creating a world
+The default world is a singleton, but you can create multiple worlds if you want.
 
 ```csharp
 var world = World.Default();
 var myOwnWorld = new World();
 ```
 
-Creating an entity
+## Creating an entity
 
 ```csharp
 var world = World.Default();
 var entity = world.CreateEntity();
 ```
 
-Adding a component to an entity. Each component is a *struct* that must implement the *IComponent* interface. 
+## Adding a component to an entity
+Each component is a *struct* that must implement the *IComponent* interface. 
 
 ```csharp
 public struct Position : IComponent {
@@ -50,7 +52,8 @@ var position = new Position { X = 1, Y = 2 };
 entity.SetComponent(position);
 ```
 
-Getting a component from an entity and modifying it. By using the *ref* keyword you can get a reference to the *struct* component, allowing you to modify it directly.
+## Getting a component from an entity and modifying it
+Current implementation does not support changing component directly, but it is a planned feature. So for now you have to get the component, modify it and then set it back to the entity.
 ```csharp
 var filter = new Filter().With<Position>();
 
@@ -62,7 +65,21 @@ foreach (var entity in filter) {
 }
 ```
 
-Commiting changes to entities. After you have modified entities you need to commit the changes to the world. This is done by calling *Commit* on the world.
+**Example:** Wrong way of setting a component. Since the component is a *struct* it is passed by value, meaning that the component is copied and not modified in the world. So the changes applied to the component after *SetComponent* are not saved.
+```csharp
+var filter = new Filter().With<Position>();
+
+foreach (var entity in filter) {
+    var position = world.GetComponent<Position>(entity);
+    entity.SetComponent(position);
+    position.X += 1;
+    Console.WriteLine($"Entity {entity} has position {position.X}, {position.Y}");
+}
+```
+
+**Commiting changes to entities** 
+
+After you have modified entities you need to commit the changes to the world. This is done by calling *Commit* on the world.
 Commit will update the entity cache and component cache, and remove entities that have been marked for deletion. This way we ensure that collections are not modified while being iterated over.
 ```csharp
 public void Run(float deltaTime)
