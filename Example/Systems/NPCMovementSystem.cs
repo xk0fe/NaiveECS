@@ -22,36 +22,35 @@ public class NPCMovementSystem : ISystem
     {
         foreach (var gridEntity in _gridFilter)
         {
-            gridEntity.TryGetComponent(out GridComponent gridComponent);
+            var gridComponent = gridEntity.GetComponent<GridComponent>();
             var grid = gridComponent.Value;
             
             foreach (var entity in _filter)
             {
-                entity.TryGetComponent(out DecisionDelayComponent decisionDelayComponent);
+                var decisionDelayComponent = entity.GetComponent<DecisionDelayComponent>();
                 decisionDelayComponent.CurrentDelay += deltaTime;
                 if (decisionDelayComponent.CurrentDelay < decisionDelayComponent.Delay)
                 {
-                    entity.SetComponent(ref decisionDelayComponent);
                     continue;
                 }
 
                 decisionDelayComponent.CurrentDelay = 0;
-                entity.SetComponent(ref decisionDelayComponent);
                 
-                entity.TryGetComponent(out PositionComponent position);
+                var position = entity.GetComponent<PositionComponent>();
                 var previousX = position.X;
                 var previousY = position.Y;
-                position.X += _random.Next(-1, 2);
-                position.Y += _random.Next(-1, 2);
-                if (!grid.CanMoveTo(position.X, position.Y, out var reason))
+                var randomX = _random.Next(-1, 2);
+                var randomY = _random.Next(-1, 2);
+                if (!grid.CanMoveTo(position.X + randomX, position.Y + randomY, out var reason))
                 {
                     continue;
                 }
+
+                position.X += randomX;
+                position.Y += randomY;
                 
                 grid.SetOccupied(previousX, previousY, false);
                 grid.SetOccupied(position.X, position.Y, true);
-                
-                entity.SetComponent(ref position);
             }
         }
     }

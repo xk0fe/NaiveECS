@@ -5,7 +5,7 @@ public sealed class EntityCache
     public HashSet<int> Entities => _entities;
     private HashSet<int> _entities = new();
     private Queue<int> _freedIds = new();
-    private int _nextId = int.MinValue;
+    private int _nextId = int.MinValue + 1;
     public int CreateEntity()
     {
         int entityId = GetUniqueId();

@@ -21,8 +21,8 @@ public class GameLogSystem : ISystem
         Console.ForegroundColor = ConsoleColor.White;
         foreach (var entity in _playerFilter)
         {
-            entity.TryGetComponent(out PlayerComponent playerComponent);
-            entity.TryGetComponent(out HealthComponent healthComponent);
+            var playerComponent = entity.GetComponent<PlayerComponent>();
+            var healthComponent = entity.GetComponent<HealthComponent>();
             Console.WriteLine($"NPCs ACTIVE: {_npcFilter.Count()} | LEVEL: {playerComponent.Level} | EXP: {playerComponent.Experience} | HP: {healthComponent.Value} | DMG: {GameSettings.PLAYER_DAMAGE}");
         }
     }

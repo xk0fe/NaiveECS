@@ -30,18 +30,17 @@ public class GridSystem : ISystem
             grid.SetObstacle(random.Next(0, 100), random.Next(0, 10));
         }
 
-        var gridComponent = new GridComponent
+        gridEntity.SetComponent(new GridComponent
         {
             Value = grid,
-        };
-        gridEntity.SetComponent(ref gridComponent);
+        });
     }
 
     public void Update(float deltaTime)
     {
         foreach (var entity in _filter)
         {
-            entity.TryGetComponent(out GridComponent grid);
+            var grid = entity.GetComponent<GridComponent>();
             grid.Value.DisplayGrid();
         }
     }

@@ -22,25 +22,23 @@ public class KillSystem : ISystem
     {
         foreach (var entity in _filter)
         {
-            entity.TryGetComponent(out PositionComponent positionComponent);
+            var positionComponent = entity.GetComponent<PositionComponent>();
 
             foreach (var gridEntity in _gridFilter)
             {
-                gridEntity.TryGetComponent(out GridComponent gridComponent);
+                var gridComponent = gridEntity.GetComponent<GridComponent>();
                 gridComponent.Value.SetOccupied(positionComponent.X, positionComponent.Y, false);
             }
 
             foreach (var playerEntity in _playerFilter)
             {
-                playerEntity.TryGetComponent(out PlayerComponent playerComponent);
+                var playerComponent = playerEntity.GetComponent<PlayerComponent>();
                 playerComponent.Experience += GameSettings.EXP_PER_KILL;
                 if (playerComponent.Experience >= GameSettings.EXP_PER_LEVEL)
                 {
                     playerComponent.Level++;
                     playerComponent.Experience = 0;
                 }
-                
-                playerEntity.SetComponent(ref playerComponent);
             }
             
             entity.Remove();

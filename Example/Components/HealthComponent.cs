@@ -2,7 +2,7 @@
 
 namespace NaiveECS.Example.Components;
 
-public struct HealthComponent : IComponent
+public record HealthComponent : IComponent
 {
     public float Value;
 }

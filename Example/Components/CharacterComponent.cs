@@ -2,6 +2,6 @@
 
 namespace NaiveECS.Example.Components;
 
-public struct CharacterComponent : IComponent
+public record CharacterComponent : IComponent
 {
 }

@@ -2,8 +2,8 @@
 
 namespace NaiveECS.Example.Components;
 
-public struct PositionComponent : IComponent
+public record PositionComponent : IComponent
 {
-    public int X;
-    public int Y;
+    public int X { get; set; }
+    public int Y { get; set; }
 }

@@ -4,17 +4,17 @@ namespace NaiveECS.Benchmarks;
 
 public class BenchmarkContext
 {
-    public struct Component1 : IComponent
+    public record Component1 : IComponent
     {
         public int Value;
     }
 
-    public struct Component2 : IComponent
+    public record Component2 : IComponent
     {
         public int Value;
     }
 
-    public struct Component3 : IComponent
+    public record Component3 : IComponent
     {
         public int Value;
     }

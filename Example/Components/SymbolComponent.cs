@@ -2,7 +2,7 @@
 
 namespace NaiveECS.Example.Components;
 
-public struct SymbolComponent : IComponent
+public record SymbolComponent : IComponent
 {
     public char Value;
     public ConsoleColor Color;

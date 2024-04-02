@@ -17,8 +17,8 @@ public class RenderSystem : ISystem
     {
         foreach (var entity in _filter)
         {
-            entity.TryGetComponent(out PositionComponent position);
-            entity.TryGetComponent(out SymbolComponent symbol);
+            var position = entity.GetComponent<PositionComponent>();
+            var symbol = entity.GetComponent<SymbolComponent>();
             Console.ForegroundColor = symbol.Color;
             Console.SetCursorPosition(position.X, position.Y);
             Console.Write(symbol.Value);

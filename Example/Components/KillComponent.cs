@@ -2,6 +2,6 @@
 
 namespace NaiveECS.Example.Components;
 
-public struct KillComponent : IComponent
+public record KillComponent : IComponent
 {
 }

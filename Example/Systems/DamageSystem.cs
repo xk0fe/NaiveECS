@@ -19,26 +19,23 @@ public class DamageSystem : ISystem
     {
         foreach (var requestEntity in _requestFilter)
         {
-            requestEntity.TryGetComponent(out DamageComponent damageComponent);
+            var damageComponent = requestEntity.GetComponent<DamageComponent>();
 
             foreach (var entity in _positionFilter)
             {
-                entity.TryGetComponent(out PositionComponent positionComponent);
+                var positionComponent = entity.GetComponent<PositionComponent>();
 
                 if (positionComponent.X != damageComponent.PositionX || positionComponent.Y != damageComponent.PositionY)
                 {
                     continue;
                 }
                 
-                entity.TryGetComponent(out HealthComponent healthComponent);
+                var healthComponent = entity.GetComponent<HealthComponent>();
                 healthComponent.Value -= damageComponent.Damage;
                 if (healthComponent.Value <= 0)
                 {
-                    var killComponent = new KillComponent();
-                    entity.SetComponent(ref killComponent);
+                    entity.SetComponent(new KillComponent());
                 }
-                    
-                entity.SetComponent(ref healthComponent);
             }
             
             requestEntity.RemoveComponent<DamageComponent>();

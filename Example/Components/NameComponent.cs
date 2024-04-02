@@ -2,7 +2,7 @@
 
 namespace NaiveECS.Example.Components;
 
-public struct NameComponent : IComponent
+public record NameComponent : IComponent
 {
     public string Value;
 }

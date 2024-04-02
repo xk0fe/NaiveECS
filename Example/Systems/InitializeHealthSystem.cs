@@ -19,11 +19,10 @@ public class InitializeHealthSystem : ISystem
     {
         foreach (var entity in _filter)
         {
-            var health = new HealthComponent
+            entity.SetComponent(new HealthComponent
             {
                 Value = DEFAULT_HEALTH
-            };
-            entity.SetComponent(ref health);
+            });
         }
     }
 }

@@ -15,7 +15,7 @@ public sealed class ComponentCache
     public Dictionary<int, HashSet<Type>> _removeQueue = new();
     public HashSet<int> _removeEntitiesQueue = new();
 
-    public void SetComponent<T>(int entity, ref T component) where T : struct, IComponent
+    public void SetComponent<T>(int entity, T component) where T : class, IComponent
     {
         if (_addQueue.TryGetValue(component.GetType(), out var entities))
         {
@@ -30,7 +30,7 @@ public sealed class ComponentCache
         }
     }
 
-    public void RemoveComponent<T>(int entity) where T : struct, IComponent
+    public void RemoveComponent<T>(int entity) where T : class, IComponent
     {
         if (_removeQueue.TryGetValue(entity, out var components))
         {
@@ -42,22 +42,22 @@ public sealed class ComponentCache
         }
     }
 
-    public bool TryGetComponent<T>(int entity, out T component) where T : struct, IComponent
+    public bool TryGetComponent<T>(int entity, out T component) where T : class, IComponent
     {
-        component = default;
+        component = null;
 
         if (!Components.TryGetValue(typeof(T), out var entities)) return false;
         
-        if (entities.TryGetValue(entity, out var objComponent) && objComponent is T)
+        if (entities.TryGetValue(entity, out var objComponent) && objComponent is T value)
         {
-            component = (T)objComponent;
+            component = value;
             return true;
         }
 
         return false;
     }
     
-    public ref T GetComponentRef<T>(int entity) where T : struct, IComponent
+    public ref T GetComponentRef<T>(int entity) where T : class, IComponent
     {
         if (!Components.TryGetValue(typeof(T), out var components)) throw new InvalidOperationException("Entity does not exist in the component dictionary.");
     
@@ -69,16 +69,16 @@ public sealed class ComponentCache
         throw new InvalidOperationException($"Component of type {typeof(T)} does not exist for entity {entity}.");
     }
     
-    public T GetComponent<T>(int entity) where T : struct, IComponent
+    public T GetComponent<T>(int entity) where T : class, IComponent
     {
         if (!Components.TryGetValue(typeof(T), out var entities))
         {
             throw new InvalidOperationException("Entity does not exist in the component dictionary.");
         }
 
-        if (entities.TryGetValue(entity, out var value) && value is T)
+        if (entities.TryGetValue(entity, out var value) && value is T component)
         {
-            return (T)value;
+            return component;
         }
 
         throw new InvalidOperationException($"Component of type {typeof(T)} does not exist for entity {entity}.");

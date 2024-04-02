@@ -2,7 +2,7 @@
 
 namespace NaiveECS.Example.Components;
 
-public struct DamageComponent : IComponent
+public record DamageComponent : IComponent
 {
     public int Damage;
     public int PositionX;

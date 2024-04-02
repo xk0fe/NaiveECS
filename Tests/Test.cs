@@ -31,7 +31,7 @@ public class Test
         {
             Value = _testNames[random.Next(0, _testNames.Length)],
         };
-        entity.SetComponent(ref name);
+        entity.SetComponent(name);
         
         Console.WriteLine($"Entity {entity} created!");
     }
@@ -50,11 +50,9 @@ public class Test
 
     public void ChangeComponent(int entity, string value)
     {
-        if (entity.TryGetComponent<NameComponent>(out var component))
-        {
-            component.Value = value;
-            Console.WriteLine($"Entity {entity} {nameof(NameComponent)} component set new value {component.Value}!");
-        }
+        var component = entity.GetComponent<NameComponent>();
+        component.Value = value;
+        Console.WriteLine($"Entity {entity} {nameof(NameComponent)} component set new value {component.Value}!");
     }
 
     public void RemoveEntity(int entity)
@@ -75,10 +73,8 @@ public class Test
 
         foreach (var entity in filter)
         {
-            if (entity.TryGetComponent<NameComponent>(out var component))
-            {
-                Console.WriteLine($"Entity {entity} name is {component.Value}");
-            }
+            var component = entity.GetComponent<NameComponent>();
+            Console.WriteLine($"Entity {entity} name is {component.Value}");
         }
     }
 }

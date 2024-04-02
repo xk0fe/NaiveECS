@@ -21,37 +21,34 @@ public class PlayerMovementSystem : ISystem
     {
         foreach (var gridEntity in _gridFilter)
         {
-            gridEntity.TryGetComponent(out GridComponent gridComponent);
+            var gridComponent = gridEntity.GetComponent<GridComponent>();
             var grid = gridComponent.Value;
             foreach (var entity in _filter)
             {
-                entity.TryGetComponent(out PositionComponent position);
-                var previousX = position.X;
-                var previousY = position.Y;
-                position.X += x;
-                position.Y += y;
+                var position = entity.GetComponent<PositionComponent>();
 
-                if (!grid.CanMoveTo(position.X, position.Y, out var reason))
+                if (!grid.CanMoveTo(position.X + x, position.Y + y, out var reason))
                 {
                     if (reason == CellBlockedReason.Occupied)
                     {
                         var damageEntity = World.Default().CreateEntity();
-                        var damage = new DamageComponent
+                        damageEntity.SetComponent(new DamageComponent
                         {
                             Damage = GameSettings.PLAYER_DAMAGE,
-                            PositionX = position.X,
-                            PositionY = position.Y,
-                        };
-                        damageEntity.SetComponent(ref damage);
+                            PositionX = position.X + x,
+                            PositionY = position.Y + y,
+                        });
                     }
                     
                     continue;
                 }
                 
+                var previousX = position.X;
+                var previousY = position.Y;
+                position.X += x;
+                position.Y += y;
                 grid.SetOccupied(previousX, previousY, false);
                 grid.SetOccupied(position.X, position.Y, true);
-                
-                entity.SetComponent(ref position);
             }
         }
     }
