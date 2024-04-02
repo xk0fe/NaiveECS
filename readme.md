@@ -77,7 +77,7 @@ foreach (var entity in filter) {
 }
 ```
 
-**Commiting changes to entities** 
+## Commiting changes to entities
 
 After you have modified entities you need to commit the changes to the world. This is done by calling *Commit* on the world.
 Commit will update the entity cache and component cache, and remove entities that have been marked for deletion. This way we ensure that collections are not modified while being iterated over.
