@@ -31,7 +31,7 @@ public class FilterTests
         {
             Value = "Test"
         };
-        testEntity.SetComponent(ref name);
+        testEntity.SetComponent(name);
         
         _world.Commit();
         
@@ -57,7 +57,7 @@ public class FilterTests
         {
             Value = "Test"
         };
-        testEntity.SetComponent(ref name);
+        testEntity.SetComponent(name);
         
         var filter = new Filter(_world);
         filter.With<NameComponent>();
@@ -72,7 +72,7 @@ public class FilterTests
             Console.WriteLine(component.Value);
             component.Value = "FilterGetComponent";
             
-            entity.SetComponent(ref component);
+            entity.SetComponent(component);
         }
 
         foreach (var entity in filter)
@@ -91,7 +91,7 @@ public class FilterTests
         {
             Value = "Test"
         };
-        testEntity.SetComponent(ref name);
+        testEntity.SetComponent(name);
         
         var filter = new Filter(_world);
         filter.With<NameComponent>();

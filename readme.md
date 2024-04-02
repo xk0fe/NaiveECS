@@ -47,7 +47,7 @@ public struct Position : IComponent {
 var world = World.Default();
 var entity = world.CreateEntity();
 var position = new Position { X = 1, Y = 2 };
-entity.SetComponent(ref position);
+entity.SetComponent(position);
 ```
 
 Getting a component from an entity and modifying it. By using the *ref* keyword you can get a reference to the *struct* component, allowing you to modify it directly.
@@ -57,7 +57,7 @@ var filter = new Filter().With<Position>();
 foreach (var entity in filter) {
     var position = world.GetComponent<Position>(entity);
     position.X += 1;
-    entity.SetComponent(ref position);
+    entity.SetComponent(position);
     Console.WriteLine($"Entity {entity} has position {position.X}, {position.Y}");
 }
 ```

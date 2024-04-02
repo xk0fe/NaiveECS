@@ -31,12 +31,12 @@ public class NPCMovementSystem : ISystem
                 decisionDelayComponent.CurrentDelay += deltaTime;
                 if (decisionDelayComponent.CurrentDelay < decisionDelayComponent.Delay)
                 {
-                    entity.SetComponent(ref decisionDelayComponent);
+                    entity.SetComponent(decisionDelayComponent);
                     continue;
                 }
 
                 decisionDelayComponent.CurrentDelay = 0;
-                entity.SetComponent(ref decisionDelayComponent);
+                entity.SetComponent(decisionDelayComponent);
                 
                 entity.TryGetComponent(out PositionComponent position);
                 var previousX = position.X;
@@ -51,7 +51,7 @@ public class NPCMovementSystem : ISystem
                 grid.SetOccupied(previousX, previousY, false);
                 grid.SetOccupied(position.X, position.Y, true);
                 
-                entity.SetComponent(ref position);
+                entity.SetComponent(position);
             }
         }
     }

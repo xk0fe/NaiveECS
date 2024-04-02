@@ -40,7 +40,7 @@ public class KillSystem : ISystem
                     playerComponent.Experience = 0;
                 }
                 
-                playerEntity.SetComponent(ref playerComponent);
+                playerEntity.SetComponent(playerComponent);
             }
             
             entity.Remove();

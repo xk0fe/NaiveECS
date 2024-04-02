@@ -42,7 +42,7 @@ public class PlayerMovementSystem : ISystem
                             PositionX = position.X,
                             PositionY = position.Y,
                         };
-                        damageEntity.SetComponent(ref damage);
+                        damageEntity.SetComponent(damage);
                     }
                     
                     continue;
@@ -51,7 +51,7 @@ public class PlayerMovementSystem : ISystem
                 grid.SetOccupied(previousX, previousY, false);
                 grid.SetOccupied(position.X, position.Y, true);
                 
-                entity.SetComponent(ref position);
+                entity.SetComponent(position);
             }
         }
     }

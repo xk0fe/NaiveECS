@@ -17,7 +17,7 @@ public class MemoryBenchmarkerDemo
         {
             var entity = world.CreateEntity();
             var component = new BenchmarkContext.Component1();
-            entity.SetComponent(ref component);
+            entity.SetComponent(component);
         }
     }
     
@@ -30,8 +30,8 @@ public class MemoryBenchmarkerDemo
             var entity = world.CreateEntity();
             var component = new BenchmarkContext.Component1();
             var component2 = new BenchmarkContext.Component2();
-            entity.SetComponent(ref component);
-            entity.SetComponent(ref component2);
+            entity.SetComponent(component);
+            entity.SetComponent(component2);
         }
     }
     
@@ -45,9 +45,9 @@ public class MemoryBenchmarkerDemo
             var component = new BenchmarkContext.Component1();
             var component2 = new BenchmarkContext.Component2();
             var component3 = new BenchmarkContext.Component3();
-            entity.SetComponent(ref component);
-            entity.SetComponent(ref component2);
-            entity.SetComponent(ref component3);
+            entity.SetComponent(component);
+            entity.SetComponent(component2);
+            entity.SetComponent(component3);
         }
     }
     
@@ -59,7 +59,7 @@ public class MemoryBenchmarkerDemo
         {
             var component = entity.GetComponent<BenchmarkContext.Component1>();
             component.Value++;
-            entity.SetComponent(ref component);
+            entity.SetComponent(component);
         }
     }
     
@@ -73,8 +73,8 @@ public class MemoryBenchmarkerDemo
             var component2 = entity.GetComponent<BenchmarkContext.Component2>();
             component.Value++;
             component2.Value++;
-            entity.SetComponent(ref component);
-            entity.SetComponent(ref component2);
+            entity.SetComponent(component);
+            entity.SetComponent(component2);
         }
     }
     
@@ -90,9 +90,9 @@ public class MemoryBenchmarkerDemo
             component.Value++;
             component2.Value++;
             component3.Value++;
-            entity.SetComponent(ref component);
-            entity.SetComponent(ref component2);
-            entity.SetComponent(ref component3);
+            entity.SetComponent(component);
+            entity.SetComponent(component2);
+            entity.SetComponent(component3);
         }
     }
     

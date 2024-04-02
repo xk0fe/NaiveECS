@@ -15,7 +15,7 @@ public sealed class ComponentCache
     public Dictionary<int, HashSet<Type>> _removeQueue = new();
     public HashSet<int> _removeEntitiesQueue = new();
 
-    public void SetComponent<T>(int entity, ref T component) where T : struct, IComponent
+    public void SetComponent<T>(int entity, T component) where T : struct, IComponent
     {
         if (_addQueue.TryGetValue(component.GetType(), out var entities))
         {

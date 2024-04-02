@@ -23,7 +23,7 @@ public class InitializeHealthSystem : ISystem
             {
                 Value = DEFAULT_HEALTH
             };
-            entity.SetComponent(ref health);
+            entity.SetComponent(health);
         }
     }
 }

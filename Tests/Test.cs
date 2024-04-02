@@ -31,7 +31,7 @@ public class Test
         {
             Value = _testNames[random.Next(0, _testNames.Length)],
         };
-        entity.SetComponent(ref name);
+        entity.SetComponent(name);
         
         Console.WriteLine($"Entity {entity} created!");
     }

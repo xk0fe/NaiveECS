@@ -25,7 +25,7 @@ public class ComponentTests
         {
             Value = value,
         };
-        entity.SetComponent(ref name);
+        entity.SetComponent(name);
         
         _world.Commit();
 
@@ -48,7 +48,7 @@ public class ComponentTests
         {
             Value = value,
         };
-        entity.SetComponent(ref name);
+        entity.SetComponent(name);
         Assert.Pass($"Entity {entity} {nameof(NameComponent)} component set new value {value}!");
     }
 }

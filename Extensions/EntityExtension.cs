@@ -19,9 +19,9 @@ public static class EntityExtension
         return World.Default().ComponentCache.TryGetComponent(entity, out component);
     }
 
-    public static void SetComponent<T>(this int entity, ref T component) where T : struct, IComponent
+    public static void SetComponent<T>(this int entity, T component) where T : struct, IComponent
     {
-        World.Default().ComponentCache.SetComponent(entity, ref component);
+        World.Default().ComponentCache.SetComponent(entity, component);
     }
 
     public static void RemoveComponent<T>(this int entity) where T : struct, IComponent

@@ -34,7 +34,7 @@ public class GridSystem : ISystem
         {
             Value = grid,
         };
-        gridEntity.SetComponent(ref gridComponent);
+        gridEntity.SetComponent(gridComponent);
     }
 
     public void Update(float deltaTime)

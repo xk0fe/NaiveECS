@@ -35,10 +35,10 @@ public class DamageSystem : ISystem
                 if (healthComponent.Value <= 0)
                 {
                     var killComponent = new KillComponent();
-                    entity.SetComponent(ref killComponent);
+                    entity.SetComponent(killComponent);
                 }
                     
-                entity.SetComponent(ref healthComponent);
+                entity.SetComponent(healthComponent);
             }
             
             requestEntity.RemoveComponent<DamageComponent>();
