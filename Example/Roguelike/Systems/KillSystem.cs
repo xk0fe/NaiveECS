@@ -1,4 +1,5 @@
 ﻿using NaiveECS.Core;
+using NaiveECS.Example.Roguelike.Common;
 using NaiveECS.Example.Roguelike.Components;
 using NaiveECS.Example.Roguelike.Constants;
 using NaiveECS.Extensions;
@@ -9,13 +10,18 @@ public class KillSystem : ISystem
 {
     private Filter _filter;
     private Filter _playerFilter;
-    private Filter _gridFilter;
+
+    private Grid _grid;
+
+    public KillSystem(Grid grid)
+    {
+        _grid = grid;
+    }
 
     public void Awake()
     {
         _filter = new Filter().With<PositionComponent, KillComponent>();
         _playerFilter = new Filter().With<PlayerComponent>();
-        _gridFilter = new Filter().With<GridComponent>(); // time to inject Grid instead of doing it ECS way
     }
 
     public void Update(float deltaTime)
@@ -24,11 +30,7 @@ public class KillSystem : ISystem
         {
             entity.TryGetComponent(out PositionComponent positionComponent);
 
-            foreach (var gridEntity in _gridFilter)
-            {
-                gridEntity.TryGetComponent(out GridComponent gridComponent);
-                gridComponent.Value.SetOccupied(positionComponent.X, positionComponent.Y, false);
-            }
+            _grid.SetOccupied(positionComponent.X, positionComponent.Y, false);
 
             foreach (var playerEntity in _playerFilter)
             {

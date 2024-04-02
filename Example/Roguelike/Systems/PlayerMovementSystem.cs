@@ -9,50 +9,50 @@ namespace NaiveECS.Example.Roguelike.Systems;
 public class PlayerMovementSystem : ISystem
 {
     private Filter _filter;
-    private Filter _gridFilter;
+
+    private Grid _grid;
+
+    public PlayerMovementSystem(Grid grid)
+    {
+        _grid = grid;
+    }
     
     public void Awake()
     {
         _filter = new Filter().With<PlayerComponent>().With<PositionComponent>();
-        _gridFilter = new Filter().With<GridComponent>();
     }
 
-    private void OnMoveCharacter(int x , int y)
+    private void OnMoveCharacter(int x, int y)
     {
-        foreach (var gridEntity in _gridFilter)
+        foreach (var entity in _filter)
         {
-            gridEntity.TryGetComponent(out GridComponent gridComponent);
-            var grid = gridComponent.Value;
-            foreach (var entity in _filter)
-            {
-                entity.TryGetComponent(out PositionComponent position);
-                var previousX = position.X;
-                var previousY = position.Y;
-                position.X += x;
-                position.Y += y;
+            entity.TryGetComponent(out PositionComponent position);
+            var previousX = position.X;
+            var previousY = position.Y;
+            position.X += x;
+            position.Y += y;
 
-                if (!grid.CanMoveTo(position.X, position.Y, out var reason))
+            if (!_grid.CanMoveTo(position.X, position.Y, out var reason))
+            {
+                if (reason == CellBlockedReason.Occupied)
                 {
-                    if (reason == CellBlockedReason.Occupied)
+                    var damageEntity = World.Default().CreateEntity();
+                    var damage = new DamageComponent
                     {
-                        var damageEntity = World.Default().CreateEntity();
-                        var damage = new DamageComponent
-                        {
-                            Damage = GameSettings.PLAYER_DAMAGE,
-                            PositionX = position.X,
-                            PositionY = position.Y,
-                        };
-                        damageEntity.SetComponent(damage);
-                    }
-                    
-                    continue;
+                        Damage = GameSettings.PLAYER_DAMAGE,
+                        PositionX = position.X,
+                        PositionY = position.Y,
+                    };
+                    damageEntity.SetComponent(damage);
                 }
-                
-                grid.SetOccupied(previousX, previousY, false);
-                grid.SetOccupied(position.X, position.Y, true);
-                
-                entity.SetComponent(position);
+
+                continue;
             }
+
+            _grid.SetOccupied(previousX, previousY, false);
+            _grid.SetOccupied(position.X, position.Y, true);
+
+            entity.SetComponent(position);
         }
     }
 

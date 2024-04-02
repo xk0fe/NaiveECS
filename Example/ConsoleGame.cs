@@ -12,8 +12,8 @@ public class ConsoleGame
         var lastFrameTime = DateTime.Now;
         var isRunning = true;
         Console.CursorVisible = false;
-        Console.SetWindowSize(GameSettings.MAP_WIDTH + 1, GameSettings.MAP_HEIGHT + 1);
-        Console.SetBufferSize(GameSettings.MAP_WIDTH + 1, GameSettings.MAP_HEIGHT + 1);
+        Console.SetWindowSize(GameSettings.MAP_WIDTH + 2, GameSettings.MAP_HEIGHT + 2);
+        Console.SetBufferSize(GameSettings.MAP_WIDTH + 2, GameSettings.MAP_HEIGHT + 2);
 
         while (isRunning)
         {

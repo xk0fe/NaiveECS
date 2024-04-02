@@ -10,12 +10,14 @@ namespace NaiveECS.Example.Roguelike;
 public class RoguelikeBoot : IBootable
 {
     private List<ISystem> _systems = new();
+    private Grid _grid;
     
     public void Boot()
     {
         Console.Title = "NaiveECS Example - Game";
         
         CreateCharacters();
+        _grid = CreateGrid();
         InitializeSystems();
     }
 
@@ -30,16 +32,32 @@ public class RoguelikeBoot : IBootable
         }
     }
 
+    private Grid CreateGrid()
+    {
+        var grid = new Grid(GameSettings.MAP_WIDTH, GameSettings.MAP_HEIGHT);
+
+        var random = new Random();
+        var randomCount = random.Next(50, 150);
+        while (randomCount > 0)
+        {
+            randomCount--;
+
+            grid.SetObstacle(random.Next(0, 100), random.Next(0, 10));
+        }
+
+        return grid;
+    }
+
     private void InitializeSystems()
     {
-        AddSystem(new NPCMovementSystem());
+        AddSystem(new NPCMovementSystem(_grid));
         AddSystem(new InitializeHealthSystem());
         
-        AddSystem(new PlayerMovementSystem());
+        AddSystem(new PlayerMovementSystem(_grid));
         AddSystem(new DamageSystem());
-        AddSystem(new KillSystem());
+        AddSystem(new KillSystem(_grid));
         
-        AddSystem(new GridSystem());
+        AddSystem(new GridSystem(_grid));
         AddSystem(new RenderSystem());
         AddSystem(new GameLogSystem());
     }
