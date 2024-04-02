@@ -1,4 +1,5 @@
-﻿using NaiveECS.Example.Interfaces;
+﻿using NaiveECS.Example.Constants;
+using NaiveECS.Example.Interfaces;
 
 namespace NaiveECS.Example;
 
@@ -11,6 +12,8 @@ public class ConsoleGame
         var lastFrameTime = DateTime.Now;
         var isRunning = true;
         Console.CursorVisible = false;
+        Console.SetWindowSize(GameSettings.MAP_WIDTH + 1, GameSettings.MAP_HEIGHT + 1);
+        Console.SetBufferSize(GameSettings.MAP_WIDTH + 1, GameSettings.MAP_HEIGHT + 1);
 
         while (isRunning)
         {

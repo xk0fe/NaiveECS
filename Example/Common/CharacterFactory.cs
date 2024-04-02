@@ -9,54 +9,45 @@ public class CharacterFactory
 {
     public int CreatePlayer()
     {
-        var entity = World.Default().CreateEntity();
-        var position = new PositionComponent
-        {
-            X = GameSettings.MAP_WIDTH / 2,
-            Y = GameSettings.MAP_HEIGHT / 2
-        };
-        entity.SetComponent(ref position);
-        var symbol = new SymbolComponent
-        {
-            Value = GameSettings.PLAYER_SYMBOL,
-            Color = ConsoleColor.Yellow,
-        };
-        entity.SetComponent(ref symbol);
-        var characterComponent = new CharacterComponent();
-        entity.SetComponent(ref characterComponent);
-        var playerComponent = new PlayerComponent
+        var x = GameSettings.MAP_WIDTH / 2;
+        var y = GameSettings.MAP_HEIGHT / 2;
+        var entity = CreateCharacter(GameSettings.PLAYER_SYMBOL, x, y, ConsoleColor.Yellow);
+        entity.SetComponent(new PlayerComponent
         {
             Level = 1,
-        };
-        entity.SetComponent(ref playerComponent);
+        });
         return entity;
     }
 
     public int CreateNPC(Random random)
     {
-        var world = World.Default();
-        var entity = world.CreateEntity();
-        var position = new PositionComponent
-        {
-            X = random.Next(0, GameSettings.MAP_WIDTH),
-            Y = random.Next(0, GameSettings.MAP_HEIGHT)
-        };
-        entity.SetComponent(ref position);
-        var symbol = new SymbolComponent
-        {
-            Value = GameSettings.NPC_SYMBOL,
-            Color = ConsoleColor.Blue,
-        };
-        entity.SetComponent(ref symbol);
-        var characterComponent = new CharacterComponent();
-        entity.SetComponent(ref characterComponent);
-
-        var decisionDelay = new DecisionDelayComponent
+        var x = random.Next(0, GameSettings.MAP_WIDTH);
+        var y = random.Next(0, GameSettings.MAP_HEIGHT);
+        var entity = CreateCharacter(GameSettings.NPC_SYMBOL, x, y, ConsoleColor.Blue);
+        entity.SetComponent(new DecisionDelayComponent
         {
             Delay = GameSettings.NPC_DECISION_DELAY,
             CurrentDelay = 0,
-        };
-        entity.SetComponent(ref decisionDelay);
+        });
+        return entity;
+    }
+
+    private int CreateCharacter(char symbol, int x, int y, ConsoleColor color)
+    {
+        var world = World.Default();
+        var entity = world.CreateEntity();
+        entity.SetComponent(new PositionComponent
+        {
+            X = x,
+            Y = y
+        });
+        entity.SetComponent(new CharacterComponent());
+        entity.SetComponent(new SymbolComponent
+        {
+            Value = symbol,
+            Color = color,
+        });
+
         return entity;
     }
 }
