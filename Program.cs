@@ -2,6 +2,6 @@
 using NaiveECS.Benchmarks;
 using NaiveECS.Example;
 
-// var game = new ConsoleGame(new RoguelikeBoot());
-BenchmarkRunner.Run<MemoryBenchmarkerDemo>();
+var game = new ConsoleGame(new RoguelikeBoot());
+// BenchmarkRunner.Run<MemoryBenchmarkerDemo>();
 
